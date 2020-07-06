@@ -25,6 +25,20 @@ router.get('/teams/:id', (req, res) => {
         })
 })
 
+router.get('/players/:id', (req, res) => {
+  console.log("in get route");
+  let queryString = 'SELECT name FROM players JOIN user_teams ON players.id = user_teams.players_id WHERE user_teams.user_id = $1';
+  
+  pool.query(queryString, [req.params.id])
+        .then(results => {
+            res.send(results.rows);
+        }).catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
+})
+
+
 
 
 // Handles POST request with new user data

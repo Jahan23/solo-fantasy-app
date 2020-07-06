@@ -16,6 +16,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute'
 import AboutPage from '../AboutPage/AboutPage';
 import UserPage from '../UserPage/UserPage';
 import InfoPage from '../InfoPage/InfoPage';
+import CreateTeam from '../CreateTeam/CreateTeam';
 
 import './App.css';
 
@@ -56,6 +57,7 @@ class App extends Component {
               component={InfoPage}
             />
             {/* If none of the other routes matched, we will show a 404. */}
+            <Route exact path="/create" component={CreateTeam}/>
             <Route render={() => <h1>404</h1>} />
           </Switch>
           <Footer />

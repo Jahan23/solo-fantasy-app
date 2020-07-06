@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LogOutButton from '../LogOutButton/LogOutButton';
+//import InfoPage from '../InfoPage/InfoPage';
 
 // this could also be written with destructuring parameters as:
 // const UserPage = ({ user }) => (
@@ -27,6 +28,10 @@ class UserPage extends Component {
       this.setState({teams: this.props.teams})
     }
   }
+
+  handleClick = () => {
+    this.props.history.push('/create')
+  }
   render() {
     return (
       <>
@@ -40,6 +45,7 @@ class UserPage extends Component {
       </p>
           <p>Your ID is: {this.props.user.id}</p>
           <LogOutButton className="log-in" />
+          <button onClick={this.handleClick}>Create Team</button>
         </div>
         <div>
           <h2>Your Teams</h2>
