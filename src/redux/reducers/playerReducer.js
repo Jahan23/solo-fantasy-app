@@ -1,4 +1,4 @@
-const playerReducer = (state = {}, action) => {
+const playerReducer = (state = [], action) => {
     switch (action.type) {
       case 'SET_PLAYER':
         return action.payload;

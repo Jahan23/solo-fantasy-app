@@ -11,11 +11,11 @@ class CreateTeam extends Component {
 
     componentDidMount() {
         this.props.dispatch({
-          type: 'ADD_PLAYER',
-          payload: this.props.user
+          type: 'GET_PLAYER'
         })
-    
+        console.log('this.props', this.props)
       }
+      
 
       componentDidUpdate(prevProps) {
         if(prevProps.players !== this.props.players) {
@@ -45,23 +45,30 @@ class CreateTeam extends Component {
       type: 'ADD_TEAM_NAME',
       payload: this.state.team_name
     })
-    this.props.dispatch({
-        type: 'ADD_PLAYER',
-        payload: {
-            id: this.state.players.id
-        }
-    })
+    // this.props.dispatch({
+    //     type: 'GET_PLAYER',
+    //     payload: {
+    //         id: this.state.players
+    //     }
+    //})
     //this.props.history.push('/about')
   }
 
   render(){
     return(
+        <>
       <div>
         <h1>Team Name</h1>
         <input value = {this.state.new_name} onChange = {this.handleNameChange} type = 'text' placeholder = 'Team Name'/>
         <button onClick = {this.addTeamInfo}>Add Team</button>
         <li>{this.state.team_name}</li>
       </div>
+      <div>
+          {this.props.players.map((players, index) => (
+          <li key={index}>{players.name}</li>
+    ))}
+      </div>
+      </>
     )
   }
 }
@@ -69,6 +76,7 @@ class CreateTeam extends Component {
 
 const mapStateToProps = state => ({
   errors: state.errors,
+  players: state.players,
 });
 
 export default connect(mapStateToProps)(CreateTeam);
