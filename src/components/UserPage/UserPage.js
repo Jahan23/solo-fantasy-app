@@ -45,8 +45,10 @@ class UserPage extends Component {
       </p>
           <p>Your ID is: {this.props.user.id}</p>
           <LogOutButton className="log-in" />
-          <button onClick={this.handleClick}>Create Team</button>
+          <button onClick={this.handleClick}>Create New Team</button>
         </div>
+        
+        
         <div>
           <h2>Your Teams</h2>
         {this.state.teams.length > 0 && 

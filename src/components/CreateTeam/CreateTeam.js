@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+//import { Link } from 'react-router-dom';
+
+//import { withRouter } from "react-router";
 
 class CreateTeam extends Component {
 
@@ -38,12 +41,15 @@ class CreateTeam extends Component {
         team_name: this.state.new_name
       //}
     })
-    this.setState({
-        new_name: '',
-    })
+    // this.setState({
+    //     new_name: '',
+    // })
+
+    //debugger
+
     this.props.dispatch({
-      type: 'ADD_TEAM_NAME',
-      payload: this.state.team_name
+      type: 'ADD_TEAM',
+      payload: {name: this.state.new_name, id: this.props.user.id}
     })
     // this.props.dispatch({
     //     type: 'GET_PLAYER',
@@ -54,6 +60,11 @@ class CreateTeam extends Component {
     //this.props.history.push('/about')
   }
 
+  addPlayers = (playersClicked) => {
+    this.props.dispatch({type: 'GET_STATS', payload: playersClicked})
+    this.props.history.push(`/home/${playersClicked}`)
+  }
+
   render(){
     return(
         <>
@@ -61,11 +72,24 @@ class CreateTeam extends Component {
         <h1>Team Name</h1>
         <input value = {this.state.new_name} onChange = {this.handleNameChange} type = 'text' placeholder = 'Team Name'/>
         <button onClick = {this.addTeamInfo}>Add Team</button>
-        <li>{this.state.team_name}</li>
+        {this.props.teams.length > 0 && 
+          this.props.teams.map((team, index) => (
+          <>
+            <input type='radio' value={team.name} id={index} name="teams" />
+            <label for={index}>{team.name}</label>
+            <br></br>
+          </>
+          ))
+        }
       </div>
       <div>
+          <h2>Select your runningbacks</h2>
           {this.props.players.map((players, index) => (
-          <li key={index}>{players.name}</li>
+          <li key={index}>{players.name}
+          <button onClick={() => this.addPlayers(players.id)}></button>
+          </li>
+          
+          
     ))}
       </div>
       </>
@@ -75,8 +99,11 @@ class CreateTeam extends Component {
 
 
 const mapStateToProps = state => ({
+  user: state.user,
   errors: state.errors,
   players: state.players,
+  teams: state.teams
 });
 
 export default connect(mapStateToProps)(CreateTeam);
+

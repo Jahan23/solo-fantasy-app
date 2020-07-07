@@ -25,6 +25,30 @@ router.get('/teams/:id', (req, res) => {
         })
 })
 
+router.post('/teams', (req, res) => {
+  const name = req.body.name;
+  const user_id = req.body.id;
+
+  let queryString = 'INSERT INTO teams (name) VALUES ($1) RETURNING id';
+  let connectQueryString = 'INSERT INTO user_teams (teams_id, user_id) VALUES ($1, $2)';
+
+  pool.query(queryString, [name])
+        .then(results => {
+            const team_id = results.rows[0].id;
+            pool.query(connectQueryString, [team_id, user_id])
+            .then(results => {
+              res.send(results.rows);
+            
+            }).catch(error => {
+              console.log(error);
+              res.sendStatus(500);
+            })
+        }).catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
+})
+
 router.get('/players', (req, res) => {
   console.log("in get route");
   let queryString = 'SELECT * FROM players';

@@ -10,3 +10,4 @@ const teamsReducer = (state = {}, action) => {
   // user will be on the redux state at:
   // state.user
   export default teamsReducer;
+
