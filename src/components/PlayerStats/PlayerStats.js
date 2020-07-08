@@ -3,15 +3,68 @@ import { connect } from 'react-redux';
 
 
 class PlayerStats extends Component {
+    state = {
+        week: 1
+    }
 
     componentDidMount() {
         this.props.dispatch({
             type: 'ADD_STATS',
             payload: {
-                week: '1',
+                week: this.state.week
             }
         })
     }
+
+    calculateStatus(touchdowns, rushing) {
+        if(rushing >= 100 && touchdowns >= 1) {
+            //green
+            return 'green'
+        } else if(rushing >= 50 || touchdowns >= 1) {
+            // yellow
+            return 'yellow'
+        } else {
+            //red
+            return 'red'
+        }
+    }
+
+    getNextWeek(week) {
+        const nextWeek = this.state.week + 1;
+
+        if(nextWeek < 4) {
+
+        this.props.dispatch({
+            type: 'ADD_STATS',
+            payload: {
+                week: nextWeek
+            }
+        })
+
+        this.setState({week: nextWeek})
+    }
+
+    return
+    }
+
+    getPreviousWeek(week) {
+        const previousWeek = this.state.week - 1;
+
+        if(previousWeek > 0) {
+
+        this.props.dispatch({
+            type: 'ADD_STATS',
+            payload: {
+                week: previousWeek
+            }
+        })
+
+        this.setState({week: previousWeek})
+    }
+
+    return
+    }
+
 
 
     render() {
@@ -22,11 +75,14 @@ class PlayerStats extends Component {
 
                     {this.props.stats.map((players, index) => (
                         <ul key={index}>
+                            <li>Status: <span>{this.calculateStatus(players.touchdowns, players.rushing)}</span></li>
                             <li>Name: {players.name}</li>
                             <li>Touchdowns: {players.touchdowns}</li>
                             <li>Rushing Yards: {players.rushing}</li>
                         </ul>
                     ))}
+                    <button onClick={() => {this.getNextWeek(this.state.week)}}>Next Week</button>
+                    <button onClick={() => {this.getPreviousWeek(this.state.week)}}>Previous Week</button>
                 </>
             )
         }
