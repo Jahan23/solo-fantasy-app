@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LogOutButton from '../LogOutButton/LogOutButton';
+import { Link } from 'react-router-dom';
 //import InfoPage from '../InfoPage/InfoPage';
 
 // this could also be written with destructuring parameters as:
@@ -45,7 +46,7 @@ class UserPage extends Component {
       </p>
           <p>Your ID is: {this.props.user.id}</p>
           <LogOutButton className="log-in" />
-          <button onClick={this.handleClick}>Create New Team</button>
+          <button onClick={this.handleClick}>Create/Edit New Teams</button>
         </div>
         
         
@@ -53,7 +54,7 @@ class UserPage extends Component {
           <h2>Your Teams</h2>
         {this.state.teams.length > 0 && 
           this.state.teams.map((team, index) => (
-          <li key={index}>{team.name}</li>
+          <li key={index}><Link to="/stats">{team.name}</Link></li>
           ))
         }
         </div>

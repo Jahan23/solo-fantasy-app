@@ -75,6 +75,23 @@ router.get('/stats/:id', (req, res) => {
         })
 })
 
+router.post('/stats', (req, res) => {
+  const week = req.body.week;
+
+  let queryString = 'SELECT players.name, stats.rushing, stats.touchdowns FROM stats JOIN players ON stats.players_id = players.id WHERE stats.week = $1;';
+  
+
+  pool.query(queryString, [week])
+        .then(results => {
+            res.send(results.rows);
+        }).catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
+})
+
+
+
 
 
 

@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 
 class Roster extends Component {
 
-    state = {
-        
+    render(){
+        return(
+            <h1>New Page</h1>
+        )
     }
 }

@@ -3,7 +3,8 @@ import errors from './errorsReducer';
 import loginMode from './loginModeReducer';
 import user from './userReducer';
 import teams from './teamsReducer';
-import players from './playerReducer'
+import players from './playerReducer';
+import stats from './getStatsReducer';
 
 // rootReducer is the primary reducer for our entire project
 // It bundles up all of the other reducers so our project can use them.
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   user, // will have an id and username if someone is logged in
   teams, // Will return a list of team names based on the user logged in.
   players,
+  stats
 });
 
 export default rootReducer;
