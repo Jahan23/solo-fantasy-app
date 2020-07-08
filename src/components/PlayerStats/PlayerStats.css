@@ -1,0 +1,17 @@
+.status-icon {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+}
+
+.green {
+    background-color: green;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.red {
+    background-color: red;
+}

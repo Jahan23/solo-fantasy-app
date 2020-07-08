@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import './PlayerStats.css'
 
 
 class PlayerStats extends Component {
@@ -29,7 +30,7 @@ class PlayerStats extends Component {
         }
     }
 
-    getNextWeek(week) {
+    getNextWeek() {
         const nextWeek = this.state.week + 1;
 
         if(nextWeek < 4) {
@@ -47,7 +48,7 @@ class PlayerStats extends Component {
     return
     }
 
-    getPreviousWeek(week) {
+    getPreviousWeek() {
         const previousWeek = this.state.week - 1;
 
         if(previousWeek > 0) {
@@ -75,14 +76,14 @@ class PlayerStats extends Component {
 
                     {this.props.stats.map((players, index) => (
                         <ul key={index}>
-                            <li>Status: <span>{this.calculateStatus(players.touchdowns, players.rushing)}</span></li>
+                            <li>Status: <span className={`status-icon ${this.calculateStatus(players.touchdowns, players.rushing)}`}></span></li>
                             <li>Name: {players.name}</li>
                             <li>Touchdowns: {players.touchdowns}</li>
                             <li>Rushing Yards: {players.rushing}</li>
                         </ul>
                     ))}
-                    <button onClick={() => {this.getNextWeek(this.state.week)}}>Next Week</button>
-                    <button onClick={() => {this.getPreviousWeek(this.state.week)}}>Previous Week</button>
+                    <button onClick={() => {this.getNextWeek()}}>Next Week</button>
+                    <button onClick={() => {this.getPreviousWeek()}}>Previous Week</button>
                 </>
             )
         }
