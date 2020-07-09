@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
+import './CreateTeam.css'
 //import { Link } from 'react-router-dom';
 
 //import { withRouter } from "react-router";
@@ -103,8 +104,9 @@ class CreateTeam extends Component {
       <div>
           <h2>Select your runningbacks</h2>
           {this.props.players.map((players, index) => (
+          
           <li key={index}>{players.name}
-          <img src={players.portrait}></img>
+          <img src={players.images} class="center" width='200px' height='200px'></img>
           <button onClick={() => this.addPlayers(players.id)}></button>
           </li>
           
@@ -125,4 +127,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(CreateTeam);
+
+//width='50px' height='50px'
 
