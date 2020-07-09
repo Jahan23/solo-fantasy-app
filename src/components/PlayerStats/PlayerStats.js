@@ -72,7 +72,7 @@ class PlayerStats extends Component {
         if (this.props.stats.length > 0) {
             return (
                 <>
-                    <h1>Your Runningbacks</h1>
+                    <h2>Your Runningbacks</h2>
 
                     {this.props.stats.map((players, index) => (
                         <ul key={index}>
@@ -84,6 +84,7 @@ class PlayerStats extends Component {
                     ))}
                     <button onClick={() => {this.getNextWeek()}}>Next Week</button>
                     <button onClick={() => {this.getPreviousWeek()}}>Previous Week</button>
+                    <h2>Status Determination</h2>
                 </>
             )
         }

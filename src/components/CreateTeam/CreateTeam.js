@@ -17,7 +17,16 @@ class CreateTeam extends Component {
           type: 'GET_PLAYER'
         })
         console.log('this.props', this.props)
+
+        this.props.dispatch({
+          type: 'FETCH_TEAMS',
+          payload: {
+            id: this.props.user.id,
+          }
+        })
       }
+
+      
       
 
       componentDidUpdate(prevProps) {
@@ -36,11 +45,6 @@ class CreateTeam extends Component {
   addTeamInfo = () => {
     //event.preventDefault();
     
-    this.setState({
-      //state: {
-        team_name: this.state.new_name
-      //}
-    })
     // this.setState({
     //     new_name: '',
     // })
@@ -51,6 +55,11 @@ class CreateTeam extends Component {
       type: 'ADD_TEAM',
       payload: {name: this.state.new_name, id: this.props.user.id}
     })
+    this.setState({
+      //state: {
+        new_name: '',//this.state.new_name
+      //}
+    })
     // this.props.dispatch({
     //     type: 'GET_PLAYER',
     //     payload: {
@@ -58,6 +67,14 @@ class CreateTeam extends Component {
     //     }
     //})
     //this.props.history.push('/about')
+  }
+
+  deleteTeam = (team) => {
+    this.setState({
+      team_name: this.state.new_name
+    })
+    console.log('team', team)
+    this.props.dispatch({type: 'DELETE_TEAM', payload: team})
   }
 
   addPlayers = (playersClicked) => {
@@ -74,11 +91,12 @@ class CreateTeam extends Component {
         <button onClick = {this.addTeamInfo}>Add Team</button>
         {this.props.teams.length > 0 && 
           this.props.teams.map((team, index) => (
-          <>
+          <div key={index}>
             <input type='radio' value={team.name} id={index} name="teams" />
-            <label for={index}>{team.name}</label>
+            <label htmlFor={index}>{team.name}</label>
+            <button onClick = {() => this.deleteTeam(team.id)}>Delete Team</button>
             <br></br>
-          </>
+          </div>
           ))
         }
       </div>
@@ -86,6 +104,7 @@ class CreateTeam extends Component {
           <h2>Select your runningbacks</h2>
           {this.props.players.map((players, index) => (
           <li key={index}>{players.name}
+          <img src={players.portrait}></img>
           <button onClick={() => this.addPlayers(players.id)}></button>
           </li>
           

@@ -12,11 +12,11 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
-router.get('/teams/:id', (req, res) => {
+router.get('/teams', (req, res) => {
   console.log("in get route");
-  let queryString = 'SELECT name FROM teams JOIN user_teams ON teams.id = user_teams.teams_id WHERE user_teams.user_id = $1';
+  let queryString = 'SELECT * FROM teams JOIN user_teams ON teams.id = user_teams.teams_id';
   
-  pool.query(queryString, [req.params.id])
+  pool.query(queryString) //[req.params.id])
         .then(results => {
             res.send(results.rows);
         }).catch(error => {
@@ -47,6 +47,19 @@ router.post('/teams', (req, res) => {
             console.log(error);
             res.sendStatus(500);
         })
+})
+
+router.delete('/teams/:id', (req, res) => {
+  let queryText = `DELETE 
+  FROM "user_teams" 
+  WHERE "id" = $1`
+    pool.query(queryText, [req.params.id])
+        .then(() => { res.sendStatus(200); })
+        .catch((err) => {
+            console.log('Error completing DELETE team query', err);
+            res.sendStatus(500);
+        });
+
 })
 
 router.get('/players', (req, res) => {
@@ -91,7 +104,7 @@ router.post('/stats', (req, res) => {
 })
 
 
-
+//WHERE user_teams.user_id = $1
 
 
 
