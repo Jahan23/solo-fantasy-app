@@ -23,8 +23,23 @@ function* getPlayer(action){
     }
   }
 
+  function* addPlayerToTeam(action){
+    try{
+      const dataForDatabase = {
+        team_id: action.payload.team_id,
+        player_id: action.payload.player_id
+      }
+
+      const response = yield axios.post('/api/user/connectPlayer', dataForDatabase);
+
+    }catch (error) {
+      console.log('User get request failed', error);
+  }
+  }
+
   function* playerSaga() {
     yield takeLatest('GET_PLAYER', getPlayer);
+    yield takeLatest('ADD_PLAYER_TO_TEAM', addPlayerToTeam);
   }
   
   

@@ -12,7 +12,7 @@ router.get('/', rejectUnauthenticated, (req, res) => {
   res.send(req.user);
 });
 
-router.get('/teams', (req, res) => {
+router.get('/teams', rejectUnauthenticated, (req, res) => {
   console.log("in get route");
   let queryString = 'SELECT * FROM teams JOIN user_teams ON teams.id = user_teams.teams_id';
   
@@ -25,7 +25,7 @@ router.get('/teams', (req, res) => {
         })
 })
 
-router.post('/teams', (req, res) => {
+router.post('/teams', rejectUnauthenticated, (req, res) => {
   const name = req.body.name;
   const user_id = req.body.id;
 
@@ -49,11 +49,31 @@ router.post('/teams', (req, res) => {
         })
 })
 
-router.delete('/teams/:id', (req, res) => {
-  let queryText = `DELETE 
-  FROM "user_teams" 
-  WHERE "id" = $1`
-    pool.query(queryText, [req.params.id])
+router.delete('/teams/:id', rejectUnauthenticated, (req, res) => {
+  let queryTextOne = `DELETE FROM teams_players WHERE teams_id = $1;`
+  let queryTextTwo = ` DELETE FROM "user_teams" WHERE "id" = $1;`
+
+  pool.query(queryTextOne, [req.params.id])
+      .then(() => { 
+        pool.query(queryTextTwo, [req.params.id])
+      .then(() => { 
+        res.sendStatus(200)
+        })
+      .catch((err) => {
+          console.log('Error completing DELETE team query', err);
+          res.sendStatus(500);
+      });
+        })
+      .catch((err) => {
+          console.log('Error completing DELETE team query', err);
+          res.sendStatus(500);
+      });
+
+})
+
+router.put('/teams/:id', rejectUnauthenticated, (req, res) => {
+  let queryText = `UPDATE "teams" SET "name" = $1 WHERE "teams"."id" = $2;`
+    pool.query(queryText, [ req.body.name, req.params.id])
         .then(() => { res.sendStatus(200); })
         .catch((err) => {
             console.log('Error completing DELETE team query', err);
@@ -62,7 +82,7 @@ router.delete('/teams/:id', (req, res) => {
 
 })
 
-router.get('/players', (req, res) => {
+router.get('/players', rejectUnauthenticated, (req, res) => {
   console.log("in get route");
   let queryString = 'SELECT * FROM players';
   
@@ -75,7 +95,7 @@ router.get('/players', (req, res) => {
         })
 })
 
-router.get('/stats/:id', (req, res) => {
+router.get('/stats/:id', rejectUnauthenticated, (req, res) => {
   console.log("in get route");
   let queryString = 'SELECT * FROM stats';
   
@@ -88,13 +108,28 @@ router.get('/stats/:id', (req, res) => {
         })
 })
 
-router.post('/stats', (req, res) => {
+router.post('/stats', rejectUnauthenticated, (req, res) => {
   const week = req.body.week;
+  const team_id = req.body.team_id;
 
-  let queryString = 'SELECT players.name, stats.rushing, stats.touchdowns FROM stats JOIN players ON stats.players_id = players.id WHERE stats.week = $1;';
+  let queryString = "SELECT players.name, stats.rushing, stats.touchdowns FROM players FULL JOIN stats ON stats.players_id = players.id FULL JOIN teams_players ON teams_players.players_id = players.id WHERE stats.week = $1 AND teams_players.teams_id = $2";
   
 
-  pool.query(queryString, [week])
+  pool.query(queryString, [week, team_id])
+        .then(results => {
+            res.send(results.rows);
+        }).catch(error => {
+            console.log(error);
+            res.sendStatus(500);
+        })
+})
+
+router.post('/connectPlayer', rejectUnauthenticated, (req, res) => {
+  const player_id = req.body.player_id;
+  const team_id = req.body.team_id;
+
+  let queryString = 'INSERT INTO teams_players (teams_id, players_id) VALUES ($1, $2)';
+  pool.query(queryString, [team_id, player_id])
         .then(results => {
             res.send(results.rows);
         }).catch(error => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
 import './PlayerStats.css'
 
 
@@ -9,12 +10,15 @@ class PlayerStats extends Component {
     }
 
     componentDidMount() {
+
         this.props.dispatch({
             type: 'ADD_STATS',
             payload: {
-                week: this.state.week
+                week: this.state.week,
+                team_id: this.props.match.params.team_id,
             }
         })
+
     }
 
     calculateStatus(touchdowns, rushing) {
@@ -38,7 +42,8 @@ class PlayerStats extends Component {
         this.props.dispatch({
             type: 'ADD_STATS',
             payload: {
-                week: nextWeek
+                week: nextWeek,
+                team_id: this.props.match.params.team_id,
             }
         })
 
@@ -85,6 +90,11 @@ class PlayerStats extends Component {
                     <button onClick={() => {this.getNextWeek()}}>Next Week</button>
                     <button onClick={() => {this.getPreviousWeek()}}>Previous Week</button>
                     <h2>Status Determination</h2>
+                    <p className="box green"></p>
+                    <p>This appears when the player meets or exceeds threshold</p>
+                    <p className="box yellow"></p>
+                    <p>This appears when the player falls below threshold</p>
+
                 </>
             )
         }
@@ -101,4 +111,4 @@ const mapStateToProps = state => ({
     stats: state.stats
 })
 
-export default connect(mapStateToProps)(PlayerStats)
+export default withRouter(connect(mapStateToProps)(PlayerStats));

@@ -65,7 +65,7 @@ class App extends Component {
               />
               <ProtectedRoute 
               exact 
-              path="/stats" 
+              path="/stats/:team_id" 
               component={PlayerStats}
               />
             <Route render={() => <h1>404</h1>} />

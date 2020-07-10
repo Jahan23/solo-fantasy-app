@@ -54,7 +54,7 @@ class UserPage extends Component {
           <h2>Your Teams</h2>
         {this.state.teams.length > 0 && 
           this.state.teams.map((team, index) => (
-          <li key={index}><Link to="/stats">{team.name}</Link></li>
+          <li key={index}><Link to={`/stats/${team.id}`}>{team.name}</Link></li>
           ))
         }
         </div>

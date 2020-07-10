@@ -4,7 +4,8 @@ import { put, takeLatest } from 'redux-saga/effects';
 function* addStats(action){
     try {
       const config = {
-        week: action.payload.week
+        week: action.payload.week,
+        team_id: action.payload.team_id
       };
   
       // the config includes credentials which
