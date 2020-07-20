@@ -28,10 +28,7 @@ class CreateTeam extends Component {
           }
         })
       }
-
       
-      
-
       componentDidUpdate(prevProps) {
         if(prevProps.players !== this.props.players) {
           this.setState({teams: this.props.players})
@@ -103,12 +100,18 @@ class CreateTeam extends Component {
     
   }
 
+  handleClick = () => {
+    this.props.history.push('/home')
+  }
+
   render(){
     return(
         <>
       <div>
-        <h1>Team Name</h1>
-        <input value = {this.state.new_name} onChange = {this.handleNameChange} type = 'text' placeholder = 'Team Name'/>
+        <h1>Create Your Team</h1>
+        <p>Enter your team name and select add team</p>
+        <p>Once your team name has been created, you may add your players and checkout</p>
+        <input value = {this.state.new_name} onChange = {this.handleNameChange} type = 'text' placeholder = 'Team Name' />
         <button onClick = {this.addTeamInfo}>Add Team</button>
         {this.props.teams.length > 0 && 
           this.props.teams.map((team, index) => (
@@ -116,8 +119,9 @@ class CreateTeam extends Component {
             <input type='radio' value={team.id} id={index} name="teams" onChange={(event) => this.selectedTeam(event)} />
             <label htmlFor={index}>{team.name}</label>
             <input onChange = {(event) => this.editName(event)} type= 'text' placeholder = 'Team Name'></input>
-            <button onClick = {() => this.submitChange(team.id)}>Submit Changes</button>
+            <button onClick = {() => this.submitChange(team.id)}>Edit Team</button>
             <button onClick = {() => this.deleteTeam(team.id)}>Delete Team</button>
+            <button onClick={this.handleClick}>Checkout</button>
             <br></br>
           </div>
           ))

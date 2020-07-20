@@ -71,6 +71,9 @@ class PlayerStats extends Component {
     return
     }
 
+    handleClick = () => {
+        this.props.history.push('/create')
+      }
 
 
     render() {
@@ -91,9 +94,12 @@ class PlayerStats extends Component {
                     <button onClick={() => {this.getPreviousWeek()}}>Previous Week</button>
                     <h2>Status Determination</h2>
                     <p className="box green"></p>
-                    <p>This appears when the player meets or exceeds threshold</p>
+                    <p>Rushes for at least 100 yds and at least one touchdown</p>
                     <p className="box yellow"></p>
-                    <p>This appears when the player falls below threshold</p>
+                    <p>Rushes for at least 50 yds and at least one touchdown</p>
+                    <p className="box red"></p>
+                    <p>Rushes under 50 yds and no touchdowns</p>
+                    <button onClick={this.handleClick}>Return to Add Players</button>
 
                 </>
             )

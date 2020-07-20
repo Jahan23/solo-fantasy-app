@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import LogOutButton from '../LogOutButton/LogOutButton';
 import { Link } from 'react-router-dom';
+import './UserPage.css'
 //import InfoPage from '../InfoPage/InfoPage';
 
 // this could also be written with destructuring parameters as:
@@ -41,17 +42,25 @@ class UserPage extends Component {
             Welcome, {this.props.user.username}!
       </h1>
           <p>
-            Welcome to my Fantasy Football Assistant. You may begin by clicking your team name to manage your players.
-            You may also create a team by selecting create new team.
-      </p>
-          <p>Your ID is: {this.props.user.id}</p>
+            Welcome to Save My Fantasy. 
+            {/* You may begin by clicking your team name to manage your players.
+            You may also create a team by selecting create new team. */}
+          </p>  
+          <p>
+            Get started by creating your team
+          </p>
+          <p>
+            Already have a team? Click your team name to view stats
+          </p>
+
+          {/* <p>Your ID is: {this.props.user.id}</p> */}
           <LogOutButton className="log-in" />
-          <button onClick={this.handleClick}>Create/Edit New Teams</button>
+          <button className="create-team" onClick={this.handleClick}>Create Team</button>
         </div>
         
         
         <div>
-          <h2>Your Teams</h2>
+          <h2>View Team Status</h2>
         {this.state.teams.length > 0 && 
           this.state.teams.map((team, index) => (
           <li key={index}><Link to={`/stats/${team.id}`}>{team.name}</Link></li>
